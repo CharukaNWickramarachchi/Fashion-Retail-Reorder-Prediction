@@ -1,0 +1,21 @@
+{
+  "SKU": "JNE3797-KR-L",
+  "category": "WESTERN DRESS",
+  "size": "L",
+  "week_start": "2022-06-27",
+  "history_available_through": "2022-06-26",
+  "predicted_weekly_shipped_units": 57.36146344097347,
+  "model": "Ridge",
+  "forecast_type": "historical_demonstration_not_current_forecast",
+  "scenario_reorder_quantity": 102,
+  "scenario_inputs": {
+    "on_hand": 10.0,
+    "on_order": 5.0,
+    "backorders": 0,
+    "lead_days": 7.0,
+    "review_days": 7.0,
+    "safety_units": 2.0
+  },
+  "scenario_only": true,
+  "assumption": "Forecast daily rate stays constant over lead time plus review period; costs and service level are not optimised."
+}

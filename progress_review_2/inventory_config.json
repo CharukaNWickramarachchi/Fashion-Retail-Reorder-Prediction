@@ -1,0 +1,17 @@
+{
+  "subset_size": 100,
+  "subset_rule": "Highest total shipped units in modelling TRAIN weeks only; SKU alphabetical tie-break. Not representative of every SKU.",
+  "lead_weeks": 1,
+  "review_weeks": 1,
+  "safety_units": 2,
+  "scenarios": [
+    {"name": "zero_start", "initial_cover_weeks": 0},
+    {"name": "one_week_start", "initial_cover_weeks": 1},
+    {"name": "two_week_start", "initial_cover_weeks": 2}
+  ],
+  "scenario_rule": "Starting stock is ceil(TRAIN weekly mean times cover). No initial pipeline. Fixed assumptions, not tuned to inventory outcomes.",
+  "demand_proxy": "Observed historical shipped units; same external series for both policies. Not true demand or observed lost sales.",
+  "timing": "Beginning of week: receive due orders, review and place order. Then weekly proxy demand occurs. Lead 1 arrives next week before demand.",
+  "shortages": "Lost within simulation, not backordered. Forecast inputs still use external historical series, not simulated fulfilled sales.",
+  "limitations": "Only two held-out weeks. Scenario design added after forecast scores existed. Exploratory simulation, not a new untouched validation or real business benefit. No costs, capacity, MOQ, returns or supplier failures. End-of-week average stock is not daily average stock."
+}

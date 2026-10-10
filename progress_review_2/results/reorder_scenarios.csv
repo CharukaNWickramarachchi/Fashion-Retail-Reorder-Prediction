@@ -1,0 +1,7 @@
+SKU,category,size,week_start,history_available_through,predicted_weekly_shipped_units,model,forecast_type,assumed_on_hand,assumed_on_order,assumed_backorders,lead_time_days,review_period_days,safety_stock_units,scenario_only,recommended_units
+JNE3797-KR-L,WESTERN DRESS,L,2022-06-27,2022-06-26,57.36146344097347,Ridge,historical_demonstration_not_current_forecast,0,0,0,7,7,2,True,117
+JNE3797-KR-XXL,WESTERN DRESS,2XL,2022-06-27,2022-06-26,38.78015091756004,Ridge,historical_demonstration_not_current_forecast,5,0,0,7,7,2,True,75
+JNE3797-KR-XS,WESTERN DRESS,XS,2022-06-27,2022-06-26,31.43464964527176,Ridge,historical_demonstration_not_current_forecast,10,0,0,7,7,2,True,55
+JNE3797-KR-M,WESTERN DRESS,M,2022-06-27,2022-06-26,27.778020716401393,Ridge,historical_demonstration_not_current_forecast,20,0,0,7,7,2,True,38
+JNE3797-KR-XXXL,WESTERN DRESS,3XL,2022-06-27,2022-06-26,24.48080994050416,Ridge,historical_demonstration_not_current_forecast,50,0,0,7,7,2,True,1
+JNE3797-KR-S,WESTERN DRESS,S,2022-06-27,2022-06-26,22.318532811127703,Ridge,historical_demonstration_not_current_forecast,100,0,0,7,7,2,True,0

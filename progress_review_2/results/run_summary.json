@@ -1,0 +1,58 @@
+{
+  "selected_model": "Ridge",
+  "selection_metric": "validation MAE",
+  "test_used_for_selection": false,
+  "protocol": "One week ahead; observed prior-week sales available at each origin; fitted test models frozen before both test weeks.",
+  "train_weeks": [
+    "2022-05-02",
+    "2022-05-09",
+    "2022-05-16",
+    "2022-05-23"
+  ],
+  "validation_weeks": [
+    "2022-05-30",
+    "2022-06-06"
+  ],
+  "test_weeks": [
+    "2022-06-13",
+    "2022-06-20"
+  ],
+  "selected_test_metrics": {
+    "MAE": 0.9592301655203102,
+    "RMSE": 1.8449622330335713,
+    "WAPE_pct": 89.26953475423123,
+    "R2": 0.46535042170437746,
+    "mean_error_pred_minus_actual": 0.18939040003831967,
+    "rows": 11230,
+    "actual_total": 12067.0,
+    "predicted_total": 14193.854192430332
+  },
+  "features": [
+    "lag_1",
+    "lag_2",
+    "lag_3",
+    "lag_4",
+    "mean_4",
+    "std_4",
+    "zero_weeks_4",
+    "change_1",
+    "category",
+    "size"
+  ],
+  "seed": 42,
+  "python": "3.14.6",
+  "packages": {
+    "numpy": "2.3.5",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.8.0",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8",
+    "joblib": "1.5.3",
+    "threadpoolctl": "3.6.0"
+  },
+  "technical_references": [
+    "https://scikit-learn.org/stable/common_pitfalls.html",
+    "https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-of-time-series-data"
+  ],
+  "limitations": "Two test weeks; fixed pre-existing cohort; retrospective final statuses; no lost demand, stock history, annual seasonality, or business-impact validation."
+}

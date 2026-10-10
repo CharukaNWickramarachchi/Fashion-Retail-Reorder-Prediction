@@ -1,0 +1,12 @@
+{
+  "Amazon Sale Report.csv": {
+    "sha256": "ac9a366da5f3af418831fa53da9eebfc3b3838803e3774eec97dbcb291441beb",
+    "bytes": 68923428,
+    "source": "User-supplied Fashion-Retail-Reorder-Prediction-main.zip; original publisher and licence not verified"
+  },
+  "Sale Report.csv": {
+    "sha256": "60320c9831d0194c52ce5791f03f9c4f12e3474490a931d7cd23282290a28e6d",
+    "bytes": 433643,
+    "source": "User-supplied Fashion-Retail-Reorder-Prediction-main.zip; original publisher and licence not verified"
+  }
+}

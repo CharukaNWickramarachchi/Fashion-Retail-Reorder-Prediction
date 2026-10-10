@@ -1,0 +1,4 @@
+SKU,forecast_week,weekly_usage,on_hand,on_order,backorders,lead_days,review_days,safety_units,stock_basis,inventory_position,target_units,suggested_order_units,action
+EXAMPLE-A,2022-06-27,10.0,5,3,1,7,7,2,ASSUMED demonstration inputs,7,22.0,15,Order suggested at review
+EXAMPLE-B,2022-06-27,5.0,40,0,0,7,7,2,ASSUMED demonstration inputs,40,12.0,0,No order at this review
+EXAMPLE-C,2022-06-27,0.1,0,0,0,0,7,0,ASSUMED demonstration inputs,0,0.1,1,Order suggested at review

@@ -1,0 +1,24 @@
+{
+  "clean_raw_rebuild": true,
+  "clean_build_from_unrelated_directory": true,
+  "path_with_spaces": true,
+  "tests_passed": 29,
+  "saved_model_and_inventory_outputs_reproduced": true,
+  "compared_outputs": [
+    "model_comparison.csv",
+    "inventory_comparison.csv",
+    "inventory_ledger.csv",
+    "stock_decisions.csv"
+  ],
+  "calculator_script_checks": {
+    "calculator_script": "passed",
+    "products": 100,
+    "worked_example": 15,
+    "blank_negative_fractional_stock_zero_review": "rejected",
+    "product_selection": "passed",
+    "browser_rendering": "not tested; browser binary unavailable"
+  },
+  "native_windows_execution": false,
+  "environment": "Linux, Python 3.12.14; package versions in run_summary.json",
+  "scope": "Research prototype. Automated correctness and reproducibility checks; not real-world validation or a zero-defect guarantee."
+}
