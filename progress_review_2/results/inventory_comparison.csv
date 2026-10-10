@@ -1,0 +1,7 @@
+scenario,model,sku_count,weeks,demand_proxy_units,fulfilled_units,unmet_proxy_units,simulated_fill_rate_pct,mean_end_stock_per_sku_week,order_events,ordered_units,final_stock_units,final_in_transit_units
+zero_start,Mean4Weeks,100,2,1516,689,827,45.44854881266491,12.785,127,3335,2557,89
+zero_start,Ridge,100,2,1516,689,827,45.44854881266491,9.71,117,2712,1942,81
+one_week_start,Mean4Weeks,100,2,1516,1400,116,92.34828496042216,13.955,149,2267,1903,579
+one_week_start,Ridge,100,2,1516,1363,153,89.90765171503958,11.255,113,1457,1363,346
+two_week_start,Mean4Weeks,100,2,1516,1471,45,97.03166226912928,23.025,95,1100,2232,585
+two_week_start,Ridge,100,2,1516,1456,60,96.04221635883906,22.075,57,616,2042,306

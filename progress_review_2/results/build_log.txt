@@ -1,0 +1,54 @@
+Prepared 5,615 SKUs; 44,920 modelling rows; full weeks 2022-04-04 to 2022-06-26.
+Validation: NaiveLastWeek
+Validation: Mean4Weeks
+Validation: Ridge
+Validation: RandomForestHistory
+Validation: RandomForestAttributes
+Validation: HistGradientBoosting
+Final test: NaiveLastWeek
+Final test: Mean4Weeks
+Final test: Ridge
+Final test: RandomForestHistory
+Final test: RandomForestAttributes
+Final test: HistGradientBoosting
+/workspace/scratch/101b88e08498/Fashion_Retail_Progress_Review_2/tests/test_inventory.py:82: FutureWarning: Setting an item of incompatible dtype is deprecated and will raise an error in a future version of pandas. Value 'inf' has dtype incompatible with int64, please explicitly cast to a compatible dtype first.
+  damaged=d.copy(); damaged.loc[0,'on_hand']=bad
+Selected on validation: Ridge; test MAE = 0.9592
+Historical forecast exported for week starting 2022-06-27; illustrative reorder scenarios saved.
+Stock decisions, inventory simulation, and STOCK_REVIEW.html saved.
+test_bad_inputs_rejected (test_inventory.InventoryTests.test_bad_inputs_rejected) ... ok
+test_batch_inputs_known_and_valid (test_inventory.InventoryTests.test_batch_inputs_known_and_valid) ... ok
+test_comparison_uses_identical_inputs (test_inventory.InventoryTests.test_comparison_uses_identical_inputs) ... ok
+test_hand_worked_receipt_timing (test_inventory.InventoryTests.test_hand_worked_receipt_timing) ... ok
+test_long_lead_keeps_orders_in_position (test_inventory.InventoryTests.test_long_lead_keeps_orders_in_position) ... ok
+test_saved_ledger_conservation_and_timing (test_inventory.InventoryTests.test_saved_ledger_conservation_and_timing) ... ok
+test_sku_selection_ignores_validation_and_test_targets (test_inventory.InventoryTests.test_sku_selection_ignores_validation_and_test_targets) ... ok
+test_stock_decisions_recompute (test_inventory.InventoryTests.test_stock_decisions_recompute) ... ok
+test_stock_report_assets_and_guide_exist (test_inventory.InventoryTests.test_stock_report_assets_and_guide_exist) ... ok
+test_summary_recomputed (test_inventory.InventoryTests.test_summary_recomputed) ... ok
+test_zero_demand_and_sufficient_stock (test_inventory.InventoryTests.test_zero_demand_and_sufficient_stock) ... ok
+test_attributes_are_known_before_modelling (test_pipeline.PipelineTests.test_attributes_are_known_before_modelling) ... ok
+test_chronological_disjoint_splits (test_pipeline.PipelineTests.test_chronological_disjoint_splits) ... ok
+test_forbidden_predictors_are_absent (test_pipeline.PipelineTests.test_forbidden_predictors_are_absent) ... ok
+test_forecast_uses_separate_refitted_model (test_pipeline.PipelineTests.test_forecast_uses_separate_refitted_model) ... ok
+test_future_sales_mutation_does_not_change_earlier_features (test_pipeline.PipelineTests.test_future_sales_mutation_does_not_change_earlier_features) ... ok
+test_metrics_recompute_from_predictions (test_pipeline.PipelineTests.test_metrics_recompute_from_predictions) ... ok
+test_raw_files_match_source_manifest (test_pipeline.PipelineTests.test_raw_files_match_source_manifest) ... ok
+test_reorder_inventory_position_and_rounding (test_pipeline.PipelineTests.test_reorder_inventory_position_and_rounding) ... ok
+test_reorder_samples_are_explicit_scenarios (test_pipeline.PipelineTests.test_reorder_samples_are_explicit_scenarios) ... ok
+test_results_page_local_links_exist (test_pipeline.PipelineTests.test_results_page_local_links_exist) ... ok
+test_saved_models_reproduce_all_test_predictions (test_pipeline.PipelineTests.test_saved_models_reproduce_all_test_predictions) ... ok
+test_stock_conflict_and_unknown_stay_unknown (test_pipeline.PipelineTests.test_stock_conflict_and_unknown_stay_unknown) ... ok
+test_unique_complete_week_grid (test_pipeline.PipelineTests.test_unique_complete_week_grid) ... ok
+test_unknown_categories_do_not_crash (test_pipeline.PipelineTests.test_unknown_categories_do_not_crash) ... ok
+test_unrelated_stock_columns_cannot_change_predictions (test_pipeline.PipelineTests.test_unrelated_stock_columns_cannot_change_predictions) ... ok
+test_validation_only_selection (test_pipeline.PipelineTests.test_validation_only_selection) ... ok
+test_weekly_target_matches_status_filtered_raw_records (test_pipeline.PipelineTests.test_weekly_target_matches_status_filtered_raw_records) ... ok
+test_zero_sales_weeks_are_preserved (test_pipeline.PipelineTests.test_zero_sales_weeks_are_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 2.402s
+
+OK
+
+Done. Open results/STOCK_REVIEW.html to view saved results.

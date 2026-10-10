@@ -1,0 +1,25 @@
+STOCK REPLENISHMENT - COMPLETE PROGRESS REVIEW 2 PROTOTYPE
+
+1. EXTRACT EVERYTHING into a new folder. Do not run inside the ZIP.
+2. OPEN docs/ONE_PAGE_OVERVIEW.html, then READ docs/GROUP_GUIDE.html together.
+3. OPEN results/STOCK_REVIEW.html for the stock demonstration.
+4. OPEN results/OPEN_RESULTS.html for the forecasting evidence.
+5. FOLLOW docs/WINDOWS_STEPS.md to rebuild in VS Code.
+
+Windows PowerShell (Python 3.12):
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe run_all.py
+
+Activation is optional. The saved results work without installing anything.
+The rebuild overwrites generated outputs, not raw data or your custom input file.
+Training may take several minutes. The first package installation needs internet.
+
+For a simple stock example:
+.\.venv\Scripts\python.exe stock_orders.py
+Expected suggested orders for the sample rows: 15, 0, 1 units.
+
+This is a historical research prototype using 2022 records, assumed stock scenarios
+and a two-week exploratory inventory simulation. It is not a deployed shop system.
+The guide explains exactly what was completed, the results, and the limitations.
+The PowerPoint is the next task after the group understands these outputs.

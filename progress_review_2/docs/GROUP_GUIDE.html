@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GROUP GUIDE</title><style>body{margin:0;background:#f3f6fa;color:#152a43;font:16px/1.65 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:32px 24px}h1{font-size:36px;line-height:1.15}h2{margin-top:34px}a{color:#096a76}section,.card{background:white;border:1px solid #dce4ed;border-radius:12px;padding:22px;margin:18px 0}.tag{font-weight:700;color:#096a76}.notice{background:#fff4d9;padding:16px;border-left:4px solid #b97912}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:9px;border-bottom:1px solid #dce4ed;text-align:left}.scroll{overflow:auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}label{display:block;font-size:14px}input,select,button{font:inherit;padding:8px;box-sizing:border-box;width:100%;border:1px solid #9cabbc;border-radius:5px}button{background:#096a76;color:white;cursor:pointer;margin-top:16px}output{display:block;font-size:20px;font-weight:700;margin-top:16px}img{max-width:100%}nav{display:flex;gap:22px;flex-wrap:wrap}code{background:#eef2f5;padding:3px} @media print{body{background:white}main{padding:0}section{break-inside:avoid}button{display:none}}pre{overflow:auto;background:#eaf0f5;padding:16px}h2{border-top:1px solid #ccd8e3;padding-top:24px}@media print{h2{break-after:avoid}}</style><main><nav><a href="../results/STOCK_REVIEW.html">Stock demonstration</a><a href="GROUP_GUIDE.html">Group guide</a><a href="WINDOWS_STEPS.html">Windows steps</a></nav><h1>Understand our project before preparing the presentation</h1>
+<h2>1. One sentence everyone should know</h2>
+<p>We are building a stock replenishment decision-support prototype for clothing retail: it estimates weekly stock usage, combines that estimate with stock and delivery information, and suggests how many units to order at each weekly review.</p>
+<p>The business goal is to balance product availability against unnecessary stock. This package completes a research demonstration from data preparation through model testing, stock recommendations and an exploratory inventory simulation. It is not a live shop system or proof of commercial benefit.</p>
+<h2>2. What was completed after EDA?</h2>
+<p>EDA describes the data: products, recorded sales, missing values and patterns. After EDA we created weekly product records, constructed past-only features, trained and compared models, evaluated later weeks, connected usage estimates to a replenishment rule, and simulated stock movements. All source code and saved outputs are included. The PowerPoint is the next communication task, not a substitute for this work.</p>
+<h2>3. Why do we still have a sales model in a stock project?</h2>
+<p>A shop needs to know both how much stock it has and how quickly stock may be used. Stock alone cannot tell us whether 20 shirts will last two days or two months. Our model predicts recorded weekly shipped units. We use that as an estimate of stock usage, with limitations. The stock decision is a separate calculation.</p>
+<p>The model does NOT directly learn the correct order quantity, and it does not predict true customer demand. We do not have reliable historical order-decision labels, dated stock movements or records of customers turned away. Calling it a direct reorder prediction model would be misleading. A clear project title is “Stock Replenishment Decision Support for Clothing Retail.” If an official title is fixed, describe this architecture accurately under that title.</p>
+<h2>4. What data do we actually have?</h2>
+<p>The team supplied an Amazon transaction file and a separate stock snapshot. The transaction file has 128,975 original rows, dated 31 March to 29 June 2022. The data appears to concern India; it is not data collected from a Sri Lankan shop. Original publication and reuse permissions remain unverified.</p>
+<p>We use 12 complete weeks, from 4 April to 26 June, and 5,615 SKUs seen before 2 May. SKU means a unique product variant, such as a particular design and size. Later new products are excluded from this experiment. The snapshot has no verified date and is kept only for reference. It cannot establish current stock or historical opening balances.</p>
+<p>We remove six exact duplicate transaction rows. The target includes the declared statuses “Shipped” and “Shipped - Delivered to Buyer,” aggregated using order dates. Statuses were observed retrospectively; we do not have the time at which each status changed. Missing transaction weeks become zero recorded shipped units. Zero is not proof of no demand or proof that the item was available.</p>
+<h2>5. Why did we change the earlier approach?</h2>
+<p>The earlier stock-integrated approach reconstructed opening stock from the snapshot plus the same-period and later sales. That makes the answer partly available in an input. This is called data leakage. Its apparent advantage cannot establish the value of genuinely available stock information.</p>
+<p>The corrected pipeline excludes reconstructed stock from model inputs. It keeps available stock as an explicit input to the replenishment calculation instead. This preserves the stock-management objective without inventing stock history. We must not claim that the old hypothesis was proved or reuse the old monthly scores as the new results.</p>
+<h2>6. How is the model built?</h2>
+<p>Each modelling row is one product in one week. Inputs include the previous four weeks&#x27; recorded units, their average and variation, the number of zero weeks, recent change, category and size. Category and size are taken from observations before the modelling cutoff. Algorithms use the appropriate subset of these features.</p>
+<p>The first four weeks supply history. Training targets are the weeks starting 2, 9, 16 and 23 May. Validation targets are 30 May and 6 June. Test targets are 13 and 20 June. We compare last-week and four-week-average baselines, Ridge regression, two Random Forest variants, and histogram gradient boosting.</p>
+<p>We select an algorithm using validation MAE, then refit on training plus validation for the final test. Test models remain frozen during the two test weeks. For the second test forecast, the previous week&#x27;s observed sales are available as inputs. This is rolling one-week-ahead prediction, not one forecast made two weeks in advance.</p>
+<p>A separate model is refitted after evaluation for a historical demonstration for the week starting 27 June 2022. It is not a forecast for today. It must never be used to reproduce held-out test results.</p>
+<h2>7. How do we explain the model results?</h2>
+<p>Ridge was selected on validation error. Its recorded test MAE is about 0.959 units per SKU-week, RMSE about 1.845 units, and WAPE about 89.3%. MAE is the average absolute difference; RMSE gives greater weight to large errors. WAPE is total absolute error divided by total observed units. WAPE is NOT accuracy.</p>
+<p>Many product-weeks have zero units, so a low average error does not mean every product is forecast well. The WAPE and the short test period show substantial limitations. Random Forest History has a slightly lower test RMSE, but we do not switch the selected model after inspecting test results. Refer to the generated tables for exact numbers.</p>
+<h2>8. How do stock recommendations work?</h2>
+<p>We review stock once per week. At that review, we calculate an order-up-to target covering supplier delivery time plus the time until the next review. Safety stock is an extra assumed buffer, not a learned service guarantee.</p>
+<p>Target units = estimated weekly usage × (delivery days + review days) / 7 + safety stock.</p>
+<p>Inventory position = available stock + incoming orders − backorders.</p>
+<p>Suggested order = target minus inventory position, rounded up to whole units, with a minimum of zero.</p>
+<p>Worked example: expected usage 10 units/week, seven-day delivery, seven-day review, safety stock 2, available stock 5, incoming orders 3, backorders 1. Target is 22. Inventory position is 7. Suggested order is 15. With 40 available units and otherwise the same inputs, no additional order is suggested.</p>
+<p>Incoming units must be relevant to the planning period. The simple calculator does not schedule individual incoming deliveries. It assumes a constant usage rate and ignores purchase budgets, minimum order quantities and pack sizes. A shop owner must review suggestions. Nothing in this package sends an order.</p>
+<p>“When to order” here means at each scheduled weekly review when the calculated quantity is positive. We have not trained an exact reorder-date model or built a separate continuous-review reorder-point model.</p>
+<h2>9. What does the inventory simulation test?</h2>
+<p>We select the 100 highest-volume SKUs using TRAINING weeks only, with an alphabetical tie-break. This subset supports an understandable demonstration and is not representative of all products. Both methods see the same historical usage series and use the same weekly ordering rule, seven-day lead time and two-unit safety buffer.</p>
+<p>Three initial-stock scenarios are shown: zero, one training-average week, and two training-average weeks. Initial quantities are rounded up. These are assumptions, not observed stock. There are no incoming orders at the start.</p>
+<p>At the beginning of each simulated week we receive due deliveries, review stock and place an order. We then fulfil that week&#x27;s historical shipped-unit proxy from available stock. Any amount not fulfilled becomes “unmet proxy units” and is lost in the simulation, not backordered. An order placed this week arrives at the beginning of next week.</p>
+<p>Both forecasting approaches continue to use the same external historical sales history, rather than their own simulated fulfilled units. This makes a controlled comparison, not a complete simulation of how new stockouts change the data a real shop would observe. We do not know actual lost demand.</p>
+<p>Only two test weeks are available. First-week shortages are identical across methods because both start with the same stock and no new order can arrive yet. Final outstanding orders are included in the report. The simulation was designed after forecast scores existed, so it is exploratory, not fresh independent validation. We did not tune the assumptions to make the selected model win.</p>
+<h2>10. What is the honest stock-management finding?</h2>
+<p>There is a trade-off. In the one-week starting-stock scenario, Ridge leaves less average week-end stock but has MORE unmet proxy units than the four-week average. In the zero-start scenario, both have the same unmet proxy units, while Ridge holds less ending stock. All three scenarios are reported.</p>
+<p>Therefore, better forecast MAE does not automatically mean better inventory service. We cannot declare an overall winner without a business service target, credible cost assumptions, more history and sensitivity testing. Fewer orders are not automatically better. Average stock here means average END-OF-WEEK units per SKU, not daily average stock, and unmet proxy is not measured lost sales.</p>
+<h2>11. What should we show our group?</h2>
+<ol>
+<li>Read this guide together, especially Sections 1, 3, 8 and 10.</li>
+<li>Open results/STOCK_REVIEW.html. Explain the business question and the assumptions banner.</li>
+<li>Show the inventory comparison, including the result where the simple average gives better availability.</li>
+<li>In the calculator enter the worked example: usage 10, available 5, incoming 3, backorders 1, delivery 7, review 7, safety 2. It must display 15 units.</li>
+<li>Change available stock to 40. Show that no order is suggested. Clear a required input and show that it requests a known value rather than treating it as zero.</li>
+<li>Open stock_decisions.csv for product-level recommendations. Its stock figures are explicitly assumed.</li>
+<li>Open OPEN_RESULTS.html for model comparison and explain why validation selected Ridge.</li>
+<li>Open test_log.txt to show completed checks. Open inventory_ledger.csv to trace receipts, orders, fulfilment and closing stock.</li>
+<li>End with limitations and the local pilot plan. Use factual results instead of promising a percentage profit improvement.</li>
+</ol>
+<h2>12. Sri Lankan context and sustainability</h2>
+<p>The intended users are clothing retailers in Sri Lanka. A plausible business concern is money tied up in slow-moving stock while other products run out. This is our proposed application; we have not established its prevalence through interviews or measured results in a local shop.</p>
+<p>The intended sustainability link is SDG 12: more careful stock planning could support efficient resource use (12.2) and waste prevention (12.5). Unsold inventory is not automatically waste. We have not measured waste reduction or official SDG indicators. Validate any future claims using actual disposal, returns and inventory records.</p>
+<h2>13. What remains for the final phase?</h2>
+<p>Obtain a retailer&#x27;s permission and dated product-level opening/closing balances, transactions, deliveries, returns, order placement and arrival times, stockout periods, supplier constraints and costs. Reconcile stock: closing = opening + receipts + customer returns − sales − supplier returns − write-offs, with adjustments documented.</p>
+<p>Run a longer evaluation with realistic delivery conditions and multiple time windows. Agree on acceptable shortage risk and inventory costs before choosing a policy. If annual seasonal patterns matter, collect enough history to cover them. Build a shop interface with stock updates, recommendations, owner approval and monitoring. Validate it with users before deployment. These are future tasks, not completed work in this package.</p>
+<h2>14. Divide understanding across the group</h2>
+<p>Assign one person to problem/data/EDA, one to modelling and leakage prevention, one to inventory calculations and simulation, and one to demonstration/results/limitations. Combine roles if the group is smaller. Each member must still explain the project sentence, the 15-unit example and why we cannot claim proven savings. Do not assign people responsibility for work they cannot explain.</p>
+<p>Over the five days: first run and agree on scope; then inspect the ledger and practise calculations; then verify results on your own computer; then prepare the slides; finally rehearse questions together. The code is ready for this sequence, but each group member needs to understand the evidence.</p>
+<h2>15. Questions the panel may ask</h2>
+<p><strong>Is this sales forecasting or stock management?</strong> The final purpose is stock replenishment. Forecasting recorded units is one component, and stock decisions come from the explicit inventory rule.</p>
+<p><strong>Why not predict stock directly?</strong> We lack trustworthy dated stock history and movements for a stock-target model. We have not manufactured those labels.</p>
+<p><strong>Is this Sri Lankan data?</strong> No. The supplied data appears to be Indian retail data. Sri Lankan use is proposed and needs local validation.</p>
+<p><strong>Did ML reduce stockouts?</strong> Not consistently in our simulation. In some scenarios the simple average meets more proxy demand while holding more stock. This trade-off is a result to discuss.</p>
+<p><strong>What is new here?</strong> Our contribution at this stage is the reproducible integration and evaluation of usage estimates and transparent replenishment decisions on the supplied data. We do not claim a novel ML algorithm.</p>
+<p><strong>What does “tested” mean?</strong> Automated checks cover temporal inputs, saved predictions, metrics, stock conservation, receipt timing and invalid inputs. They do not prove zero defects or real-world effectiveness. Python execution was tested on Linux; Windows commands still need to be run by the group.</p>
+<p><strong>Can we say the hypothesis was proved?</strong> No. The old reconstructed-stock comparison was invalid for that claim, and the new experiment shows conditional trade-offs rather than universal improvement.</p>
+<h2>16. Where to find the evidence</h2>
+<ul>
+<li>results/data_audit.json: cleaning, cohort, dates and assumptions.</li>
+<li>results/model_comparison.csv: validation and test scores.</li>
+<li>results/test_predictions.csv: predictions used for test metrics.</li>
+<li>results/inventory_comparison.csv: simulated stock measures.</li>
+<li>results/inventory_ledger.csv: all simulated stock movements.</li>
+<li>results/inventory_assumptions.json: complete experiment settings.</li>
+<li>results/stock_decisions.csv: 100 illustrative recommendations.</li>
+<li>results/verification.json and test_log.txt: automated checks.</li>
+<li>config.json and inventory_config.json: reproducible settings.</li>
+<li>WINDOWS_STEPS.md: VS Code and PowerShell commands.</li>
+</ul>
+<h2>References and their purpose</h2>
+<ul>
+<li>scikit-learn, common pitfalls: https://scikit-learn.org/stable/common_pitfalls.html — leakage prevention and consistent preprocessing.</li>
+<li>scikit-learn, time-series validation: https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-of-time-series-data — chronological evaluation.</li>
+<li>MIT OpenCourseWare, supply-chain summary: https://ocw.mit.edu/courses/15-763j-manufacturing-system-and-supply-chain-design-spring-2005/e1800430fdccaf618b22bd551fc00fac_summary.pdf — periodic review and inventory concepts.</li>
+<li>UN SDG 12: https://sdgs.un.org/goals/goal12 — target definitions; no project impact is inferred from these definitions.</li>
+</ul>
+<p>All numerical project findings come from the included code and results. This document supersedes descriptions that claim reconstructed stock was known in advance or that stock integration has already been proved beneficial.</p></main></html>

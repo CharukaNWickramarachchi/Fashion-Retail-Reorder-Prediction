@@ -1,0 +1,278 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stock Replenishment | Group Review</title><style>body{margin:0;background:#f3f6fa;color:#152a43;font:16px/1.65 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:32px 24px}h1{font-size:36px;line-height:1.15}h2{margin-top:34px}a{color:#096a76}section,.card{background:white;border:1px solid #dce4ed;border-radius:12px;padding:22px;margin:18px 0}.tag{font-weight:700;color:#096a76}.notice{background:#fff4d9;padding:16px;border-left:4px solid #b97912}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:9px;border-bottom:1px solid #dce4ed;text-align:left}.scroll{overflow:auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}label{display:block;font-size:14px}input,select,button{font:inherit;padding:8px;box-sizing:border-box;width:100%;border:1px solid #9cabbc;border-radius:5px}button{background:#096a76;color:white;cursor:pointer;margin-top:16px}output{display:block;font-size:20px;font-weight:700;margin-top:16px}img{max-width:100%}nav{display:flex;gap:22px;flex-wrap:wrap}code{background:#eef2f5;padding:3px} @media print{body{background:white}main{padding:0}section{break-inside:avoid}button{display:none}}</style><main>
+<p class="tag">GROUP 05 · PROGRESS REVIEW 2 · RESEARCH PROTOTYPE</p><h1>Stock replenishment decisions,<br>with evidence your group can explain.</h1>
+<p>Decide how many units to order at a weekly stock review. Historical usage estimates feed a transparent stock calculation. A controlled simulation compares two ways of estimating usage.</p>
+<nav><a href="../docs/GROUP_GUIDE.html">Read the group guide first</a><a href="OPEN_RESULTS.html">Forecast model evidence</a><a href="verification.json">Verification</a></nav>
+<div class="notice"><b>Historical demonstration, not live shop advice.</b> Sales records are from 2022. Stock balances and delivery settings below are assumed. The source stock snapshot is undated and is not used as current stock. No Sri Lankan pilot or measured savings are claimed.</div>
+<section><h2>1. What did the stock simulation show?</h2><p>100 SKUs selected using training-period volume only. Two held-out weeks starting 13 and 20 June 2022. Compare the validation-selected Ridge with a four-week average under the same weekly ordering rule.</p><ul><li><b>zero_start</b>: Ridge unmet proxy = 827; four-week average = 827. Mean ending stock per SKU-week: 9.71 versus 12.79 units.</li><li><b>one_week_start</b>: Ridge unmet proxy = 153; four-week average = 116. Mean ending stock per SKU-week: 11.26 versus 13.96 units.</li><li><b>two_week_start</b>: Ridge unmet proxy = 60; four-week average = 45. Mean ending stock per SKU-week: 22.07 versus 23.02 units.</li></ul>
+<p>Read shortages and stock held together. Fewer ordered units alone does not prove a better policy. Orders still in transit at the end are reported, not discarded.</p>
+<img src="figures/inventory_comparison.png" alt="Simulated unmet proxy units and mean week-end stock for both methods under three starting-stock scenarios">
+<div class="scroll"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>scenario</th>
+      <th>model</th>
+      <th>unmet_proxy_units</th>
+      <th>simulated_fill_rate_pct</th>
+      <th>mean_end_stock_per_sku_week</th>
+      <th>order_events</th>
+      <th>ordered_units</th>
+      <th>final_in_transit_units</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>zero_start</td>
+      <td>Mean4Weeks</td>
+      <td>827</td>
+      <td>45.45</td>
+      <td>12.79</td>
+      <td>127</td>
+      <td>3335</td>
+      <td>89</td>
+    </tr>
+    <tr>
+      <td>zero_start</td>
+      <td>Ridge</td>
+      <td>827</td>
+      <td>45.45</td>
+      <td>9.71</td>
+      <td>117</td>
+      <td>2712</td>
+      <td>81</td>
+    </tr>
+    <tr>
+      <td>one_week_start</td>
+      <td>Mean4Weeks</td>
+      <td>116</td>
+      <td>92.35</td>
+      <td>13.96</td>
+      <td>149</td>
+      <td>2267</td>
+      <td>579</td>
+    </tr>
+    <tr>
+      <td>one_week_start</td>
+      <td>Ridge</td>
+      <td>153</td>
+      <td>89.91</td>
+      <td>11.26</td>
+      <td>113</td>
+      <td>1457</td>
+      <td>346</td>
+    </tr>
+    <tr>
+      <td>two_week_start</td>
+      <td>Mean4Weeks</td>
+      <td>45</td>
+      <td>97.03</td>
+      <td>23.02</td>
+      <td>95</td>
+      <td>1100</td>
+      <td>585</td>
+    </tr>
+    <tr>
+      <td>two_week_start</td>
+      <td>Ridge</td>
+      <td>60</td>
+      <td>96.04</td>
+      <td>22.07</td>
+      <td>57</td>
+      <td>616</td>
+      <td>306</td>
+    </tr>
+  </tbody>
+</table></div><p><a href="inventory_comparison.csv">Download comparison CSV</a> · <a href="inventory_ledger.csv">Every stock movement</a> · <a href="inventory_assumptions.json">All assumptions</a> · <a href="inventory_subset.csv">SKU selection</a></p></section>
+<section><h2>2. Try a stock decision</h2><p>Select a product to load its historical forecast for 27 June 2022, or adjust the usage estimate. All stock inputs are illustrative and editable. Changes here stay in your browser and do not change the saved experiment.</p>
+<label>Product<select id="sku"></select></label><div class="grid">
+<label>Expected units per week<input id="usage" type="number" min="0" step="any"></label>
+<label>Available units<input id="hand" type="number" min="0" step="1"></label>
+<label>Incoming units<input id="incoming" type="number" min="0" step="1" value="0"></label>
+<label>Backordered units<input id="backlog" type="number" min="0" step="1" value="0"></label>
+<label>Delivery time (days)<input id="lead" type="number" min="0" step="1" value="7"></label>
+<label>Review interval (days)<input id="review" type="number" min="1" step="1" value="7"></label>
+<label>Safety stock (units)<input id="safety" type="number" min="0" step="1" value="2"></label></div>
+<button id="calculate">Calculate suggested order</button><output id="answer" aria-live="polite"></output><p id="math"></p>
+<p>Target = weekly usage × (delivery days + review days) ÷ 7 + safety stock.<br>Inventory position = available + incoming − backorders.<br>Suggested quantity = target − inventory position, rounded up; minimum zero.</p><p>Assumes incoming orders arrive in the relevant period, a constant usage rate, no order-size constraints and owner approval. It is a periodic weekly review, not a separately fitted reorder-point model.</p></section>
+<section><h2>3. Product-level stock recommendations</h2><p>First 20 of the 100 training-selected products. Assumed available stock = rounded-up training weekly average; no incoming orders or backorders; seven-day delivery and seven-day review; safety stock two units.</p><div class="scroll"><table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>SKU</th>
+      <th>category</th>
+      <th>predicted_weekly_shipped_units</th>
+      <th>assumed_on_hand</th>
+      <th>suggested_order_units</th>
+      <th>action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>JNE3797-KR-M</td>
+      <td>WESTERN DRESS</td>
+      <td>27.78</td>
+      <td>54</td>
+      <td>4</td>
+      <td>Order suggested at review</td>
+    </tr>
+    <tr>
+      <td>JNE3797-KR-S</td>
+      <td>WESTERN DRESS</td>
+      <td>22.32</td>
+      <td>54</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3797-KR-L</td>
+      <td>WESTERN DRESS</td>
+      <td>57.36</td>
+      <td>53</td>
+      <td>64</td>
+      <td>Order suggested at review</td>
+    </tr>
+    <tr>
+      <td>JNE3797-KR-XL</td>
+      <td>WESTERN DRESS</td>
+      <td>20.12</td>
+      <td>51</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3405-KR-S</td>
+      <td>KURTA</td>
+      <td>3.05</td>
+      <td>33</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3797-KR-XXXL</td>
+      <td>WESTERN DRESS</td>
+      <td>24.48</td>
+      <td>30</td>
+      <td>21</td>
+      <td>Order suggested at review</td>
+    </tr>
+    <tr>
+      <td>JNE3405-KR-M</td>
+      <td>KURTA</td>
+      <td>3.35</td>
+      <td>30</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3797-KR-XS</td>
+      <td>WESTERN DRESS</td>
+      <td>31.43</td>
+      <td>29</td>
+      <td>36</td>
+      <td>Order suggested at review</td>
+    </tr>
+    <tr>
+      <td>J0003-SET-S</td>
+      <td>SET</td>
+      <td>6.90</td>
+      <td>27</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>SET183-KR-DH-M</td>
+      <td>SET</td>
+      <td>5.79</td>
+      <td>26</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3373-KR-XXXL</td>
+      <td>KURTA</td>
+      <td>2.44</td>
+      <td>25</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>J0341-DR-XXL</td>
+      <td>WESTERN DRESS</td>
+      <td>4.24</td>
+      <td>24</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3373-KR-XL</td>
+      <td>KURTA</td>
+      <td>2.96</td>
+      <td>24</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>SET324-KR-NP-M</td>
+      <td>SET</td>
+      <td>3.15</td>
+      <td>23</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>J0341-DR-L</td>
+      <td>WESTERN DRESS</td>
+      <td>4.88</td>
+      <td>23</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>JNE3797-KR-XXL</td>
+      <td>WESTERN DRESS</td>
+      <td>38.78</td>
+      <td>22</td>
+      <td>58</td>
+      <td>Order suggested at review</td>
+    </tr>
+    <tr>
+      <td>J0341-DR-XXXL</td>
+      <td>WESTERN DRESS</td>
+      <td>4.17</td>
+      <td>22</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>J0341-DR-M</td>
+      <td>WESTERN DRESS</td>
+      <td>5.00</td>
+      <td>22</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+    <tr>
+      <td>J0230-SKD-M</td>
+      <td>SET</td>
+      <td>13.95</td>
+      <td>21</td>
+      <td>9</td>
+      <td>Order suggested at review</td>
+    </tr>
+    <tr>
+      <td>J0119-TP-XXXL</td>
+      <td>TOP</td>
+      <td>3.42</td>
+      <td>21</td>
+      <td>0</td>
+      <td>No order at this review</td>
+    </tr>
+  </tbody>
+</table></div><p><a href="stock_decisions.csv">All 100 product recommendations</a> · <a href="next_week_forecast.csv">Full-cohort historical usage estimates</a></p></section>
+<section><h2>4. What this experiment cannot establish</h2><ul><li>Historical shipped units are a demand proxy. Unrecorded lost demand is unknown.</li><li>The same external historical series feeds both approaches even if the simulation runs out of stock. This is a controlled replay, not a complete closed-loop shop simulation.</li><li>Only two evaluation weeks. Initial stock heavily affects outcomes; three scenarios are shown without choosing a winning setup.</li><li>The inventory experiment was added after forecast scores were available. It is exploratory, not a fresh independent holdout.</li><li>Week-end stock averages are not daily average stock. No cost, profitability, waste or sustainability benefits were measured.</li><li>A local pilot needs dated stock balances, receipts, returns, supplier lead times and stockout records. New products and annual seasonality need more data.</li></ul></section>
+</main><script id="products" type="application/json">[{"SKU":"JNE3797-KR-M","predicted_weekly_shipped_units":27.7780207164,"assumed_on_hand":54},{"SKU":"JNE3797-KR-S","predicted_weekly_shipped_units":22.3185328111,"assumed_on_hand":54},{"SKU":"JNE3797-KR-L","predicted_weekly_shipped_units":57.361463441,"assumed_on_hand":53},{"SKU":"JNE3797-KR-XL","predicted_weekly_shipped_units":20.1155925546,"assumed_on_hand":51},{"SKU":"JNE3405-KR-S","predicted_weekly_shipped_units":3.0465717775,"assumed_on_hand":33},{"SKU":"JNE3797-KR-XXXL","predicted_weekly_shipped_units":24.4808099405,"assumed_on_hand":30},{"SKU":"JNE3405-KR-M","predicted_weekly_shipped_units":3.3542888015,"assumed_on_hand":30},{"SKU":"JNE3797-KR-XS","predicted_weekly_shipped_units":31.4346496453,"assumed_on_hand":29},{"SKU":"J0003-SET-S","predicted_weekly_shipped_units":6.9009680441,"assumed_on_hand":27},{"SKU":"SET183-KR-DH-M","predicted_weekly_shipped_units":5.7949415315,"assumed_on_hand":26},{"SKU":"JNE3373-KR-XXXL","predicted_weekly_shipped_units":2.4368483293,"assumed_on_hand":25},{"SKU":"J0341-DR-XXL","predicted_weekly_shipped_units":4.2369367189,"assumed_on_hand":24},{"SKU":"JNE3373-KR-XL","predicted_weekly_shipped_units":2.9600836384,"assumed_on_hand":24},{"SKU":"SET324-KR-NP-M","predicted_weekly_shipped_units":3.1501193008,"assumed_on_hand":23},{"SKU":"J0341-DR-L","predicted_weekly_shipped_units":4.8776348237,"assumed_on_hand":23},{"SKU":"JNE3797-KR-XXL","predicted_weekly_shipped_units":38.7801509176,"assumed_on_hand":22},{"SKU":"J0341-DR-XXXL","predicted_weekly_shipped_units":4.1660858425,"assumed_on_hand":22},{"SKU":"J0341-DR-M","predicted_weekly_shipped_units":4.9974647319,"assumed_on_hand":22},{"SKU":"J0230-SKD-M","predicted_weekly_shipped_units":13.9474019518,"assumed_on_hand":21},{"SKU":"J0119-TP-XXXL","predicted_weekly_shipped_units":3.4224961006,"assumed_on_hand":21},{"SKU":"J0003-SET-XXXL","predicted_weekly_shipped_units":2.8217416881,"assumed_on_hand":20},{"SKU":"J0230-SKD-S","predicted_weekly_shipped_units":8.1907114954,"assumed_on_hand":19},{"SKU":"J0341-DR-S","predicted_weekly_shipped_units":4.5406162288,"assumed_on_hand":18},{"SKU":"J0119-TP-XXL","predicted_weekly_shipped_units":4.2861800693,"assumed_on_hand":18},{"SKU":"JNE3368-KR-XXL","predicted_weekly_shipped_units":6.7021595437,"assumed_on_hand":18},{"SKU":"SET345-KR-NP-XL","predicted_weekly_shipped_units":3.5343448267,"assumed_on_hand":17},{"SKU":"SET278-KR-NP-M","predicted_weekly_shipped_units":4.9326734352,"assumed_on_hand":17},{"SKU":"SET397-KR-NP  -M","predicted_weekly_shipped_units":1.3885677753,"assumed_on_hand":17},{"SKU":"SET324-KR-NP-L","predicted_weekly_shipped_units":4.0733966732,"assumed_on_hand":16},{"SKU":"SET345-KR-NP-M","predicted_weekly_shipped_units":11.8536944256,"assumed_on_hand":16},{"SKU":"SET345-KR-NP-S","predicted_weekly_shipped_units":6.7022834913,"assumed_on_hand":16},{"SKU":"J0119-TP-XL","predicted_weekly_shipped_units":4.5501338966,"assumed_on_hand":16},{"SKU":"J0341-DR-XL","predicted_weekly_shipped_units":2.9635808809,"assumed_on_hand":16},{"SKU":"JNE3405-KR-L","predicted_weekly_shipped_units":2.4823347187,"assumed_on_hand":16},{"SKU":"J0119-TP-L","predicted_weekly_shipped_units":4.7734991826,"assumed_on_hand":15},{"SKU":"J0230-SKD-L","predicted_weekly_shipped_units":5.2499210527,"assumed_on_hand":15},{"SKU":"JNE3801-KR-L","predicted_weekly_shipped_units":4.3642248553,"assumed_on_hand":15},{"SKU":"SET324-KR-NP-S","predicted_weekly_shipped_units":1.9036593787,"assumed_on_hand":15},{"SKU":"JNE3399-KR-M","predicted_weekly_shipped_units":10.5571467612,"assumed_on_hand":15},{"SKU":"J0003-SET-XXL","predicted_weekly_shipped_units":2.3249385726,"assumed_on_hand":15},{"SKU":"J0230-SKD-XL","predicted_weekly_shipped_units":15.4670571491,"assumed_on_hand":15},{"SKU":"SET397-KR-NP-S","predicted_weekly_shipped_units":2.028972515,"assumed_on_hand":15},{"SKU":"JNE3798-KR-XL","predicted_weekly_shipped_units":8.5366547853,"assumed_on_hand":14},{"SKU":"JNE3373-KR-XXL","predicted_weekly_shipped_units":3.9671938609,"assumed_on_hand":14},{"SKU":"SET345-KR-NP-L","predicted_weekly_shipped_units":7.7581870056,"assumed_on_hand":14},{"SKU":"J0335-DR-L","predicted_weekly_shipped_units":2.7227904244,"assumed_on_hand":14},{"SKU":"J0003-SET-XS","predicted_weekly_shipped_units":13.51574727,"assumed_on_hand":14},{"SKU":"J0118-TP-XXXL","predicted_weekly_shipped_units":1.9457610467,"assumed_on_hand":14},{"SKU":"JNE3567-KR-M","predicted_weekly_shipped_units":7.2419191259,"assumed_on_hand":14},{"SKU":"JNE3567-KR-XL","predicted_weekly_shipped_units":0.7924536492,"assumed_on_hand":14},{"SKU":"SET331-KR-NP-M","predicted_weekly_shipped_units":6.2882674855,"assumed_on_hand":13},{"SKU":"SET291-KR-PP-L","predicted_weekly_shipped_units":1.9489697089,"assumed_on_hand":12},{"SKU":"JNE3784-KR-M","predicted_weekly_shipped_units":7.3949205113,"assumed_on_hand":12},{"SKU":"JNE3800-KR-L","predicted_weekly_shipped_units":11.1084440358,"assumed_on_hand":12},{"SKU":"SET324-KR-NP-XL","predicted_weekly_shipped_units":3.8538097448,"assumed_on_hand":12},{"SKU":"J0003-SET-XL","predicted_weekly_shipped_units":2.3061388741,"assumed_on_hand":12},{"SKU":"J0117-TP-XL","predicted_weekly_shipped_units":5.500977372,"assumed_on_hand":12},{"SKU":"J0118-TP-XXL","predicted_weekly_shipped_units":1.5561214039,"assumed_on_hand":12},{"SKU":"J0339-DR-XL","predicted_weekly_shipped_units":6.3727134279,"assumed_on_hand":11},{"SKU":"JNE3373-KR-L","predicted_weekly_shipped_units":3.0942460783,"assumed_on_hand":11},{"SKU":"J0119-TP-M","predicted_weekly_shipped_units":3.1367047924,"assumed_on_hand":11},{"SKU":"JNE2014-KR-178-XL","predicted_weekly_shipped_units":2.5157081374,"assumed_on_hand":11},{"SKU":"JNE3510-KR-M","predicted_weekly_shipped_units":4.7275296122,"assumed_on_hand":11},{"SKU":"JNE3721-KR-XL","predicted_weekly_shipped_units":7.1082888458,"assumed_on_hand":11},{"SKU":"JNE3721-KR-XXL","predicted_weekly_shipped_units":2.4266569262,"assumed_on_hand":11},{"SKU":"SET293-KR-NP-S","predicted_weekly_shipped_units":2.1068301479,"assumed_on_hand":11},{"SKU":"SET324-KR-NP-XXL","predicted_weekly_shipped_units":4.2652205913,"assumed_on_hand":11},{"SKU":"JNE3373-KR-M","predicted_weekly_shipped_units":10.005321592,"assumed_on_hand":11},{"SKU":"SET374-KR-NP-L","predicted_weekly_shipped_units":2.4418868165,"assumed_on_hand":11},{"SKU":"J0301-TP-L","predicted_weekly_shipped_units":4.0226983974,"assumed_on_hand":11},{"SKU":"JNE3373-KR-S","predicted_weekly_shipped_units":3.1918072651,"assumed_on_hand":11},{"SKU":"JNE3510-KR-L","predicted_weekly_shipped_units":1.6925315328,"assumed_on_hand":11},{"SKU":"SET324-KR-NP-XXXL","predicted_weekly_shipped_units":2.271216128,"assumed_on_hand":11},{"SKU":"J0008-SKD-M","predicted_weekly_shipped_units":8.0756092183,"assumed_on_hand":10},{"SKU":"J0117-TP-XXL","predicted_weekly_shipped_units":4.0586691936,"assumed_on_hand":10},{"SKU":"J0341-DR-XS","predicted_weekly_shipped_units":2.3741767247,"assumed_on_hand":10},{"SKU":"JNE3291-KR-XXL","predicted_weekly_shipped_units":5.8852069137,"assumed_on_hand":10},{"SKU":"JNE3399-KR-XL","predicted_weekly_shipped_units":5.3549082873,"assumed_on_hand":10},{"SKU":"SET058-KR-NP-L","predicted_weekly_shipped_units":1.1590128771,"assumed_on_hand":10},{"SKU":"SET268-KR-NP-XL","predicted_weekly_shipped_units":4.3709145661,"assumed_on_hand":10},{"SKU":"SET291-KR-PP-M","predicted_weekly_shipped_units":12.7517813684,"assumed_on_hand":10},{"SKU":"JNE2305-KR-533-M","predicted_weekly_shipped_units":7.1647009879,"assumed_on_hand":10},{"SKU":"JNE3800-KR-M","predicted_weekly_shipped_units":12.611945639,"assumed_on_hand":10},{"SKU":"JNE3801-KR-XXL","predicted_weekly_shipped_units":5.5047899726,"assumed_on_hand":10},{"SKU":"J0117-TP-M","predicted_weekly_shipped_units":4.3996068325,"assumed_on_hand":10},{"SKU":"J0339-DR-XXL","predicted_weekly_shipped_units":4.1369592304,"assumed_on_hand":10},{"SKU":"JNE3291-KR-XL","predicted_weekly_shipped_units":8.9826460666,"assumed_on_hand":10},{"SKU":"JNE3510-KR-S","predicted_weekly_shipped_units":6.2666041095,"assumed_on_hand":10},{"SKU":"SET324-KR-NP-XS","predicted_weekly_shipped_units":5.8575208537,"assumed_on_hand":10},{"SKU":"SET374-KR-NP-S","predicted_weekly_shipped_units":2.7820285055,"assumed_on_hand":10},{"SKU":"JNE3399-KR-S","predicted_weekly_shipped_units":7.2249568026,"assumed_on_hand":10},{"SKU":"JNE3721-KR-L","predicted_weekly_shipped_units":6.5503053504,"assumed_on_hand":10},{"SKU":"JNE3801-KR-M","predicted_weekly_shipped_units":7.0609937303,"assumed_on_hand":10},{"SKU":"SET268-KR-NP-L","predicted_weekly_shipped_units":0.2876706466,"assumed_on_hand":10},{"SKU":"SET273-KR-NP-S","predicted_weekly_shipped_units":1.0729047203,"assumed_on_hand":10},{"SKU":"SET278-KR-NP-XL","predicted_weekly_shipped_units":1.5784196817,"assumed_on_hand":10},{"SKU":"SET291-KR-PP-XL","predicted_weekly_shipped_units":2.0915179612,"assumed_on_hand":10},{"SKU":"J0003-SET-M","predicted_weekly_shipped_units":2.1214499652,"assumed_on_hand":9},{"SKU":"J0008-SKD-S","predicted_weekly_shipped_units":2.3805478569,"assumed_on_hand":9},{"SKU":"J0301-TP-XXL","predicted_weekly_shipped_units":3.8456780095,"assumed_on_hand":9}]</script><script>
+const products=JSON.parse(document.getElementById('products').textContent);
+const $=id=>document.getElementById(id);
+products.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.SKU;$('sku').appendChild(o)});
+function calc(){const ids=['usage','hand','incoming','backlog','lead','review','safety'];const raw=ids.map(id=>$(id).value);const v=raw.map(Number);if(raw.some(x=>x.trim()==='')||v.some(x=>!Number.isFinite(x)||x<0)||v[5]<=0||v.slice(1).some(x=>!Number.isInteger(x))){$('answer').textContent='Enter known, nonnegative values; stock counts and days must be whole numbers, and review days must exceed zero.';$('math').textContent='';return;}const [usage,hand,incoming,backlog,lead,review,safety]=v;const target=usage*(lead+review)/7+safety;const pos=hand+incoming-backlog;const q=Math.ceil(Math.max(0,target-pos));$('answer').textContent=q>0?'Suggested order: '+q+' units':'No order suggested at this review';$('math').textContent='Target '+target.toFixed(2)+' units − inventory position '+pos+' units → '+q+' units. Scenario only.';}
+function select(){const p=products[Number($('sku').value)];$('usage').value=p.predicted_weekly_shipped_units;$('hand').value=p.assumed_on_hand;calc();}
+$('sku').addEventListener('change',select);$('calculate').addEventListener('click',calc);select();
+</script></html>

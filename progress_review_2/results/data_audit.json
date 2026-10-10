@@ -1,0 +1,55 @@
+{
+  "raw_transaction_rows": 128975,
+  "exact_duplicate_rows_removed": 6,
+  "invalid_key_rows_removed": 0,
+  "invalid_quantity_rows_removed": 0,
+  "raw_date_range": [
+    "2022-03-31",
+    "2022-06-29"
+  ],
+  "full_week_window": [
+    "2022-04-04",
+    "2022-06-26"
+  ],
+  "rows_outside_full_week_window": 7866,
+  "target_definition": "Recorded units on orders with status Shipped or Shipped - Delivered to Buyer, aggregated by order date.",
+  "cohort_SKUs": 5615,
+  "complete_weeks": 12,
+  "model_rows": 44920,
+  "rows_by_split": {
+    "train": 22460,
+    "validation": 11230,
+    "test": 11230
+  },
+  "new_SKUs_after_cohort_cutoff_excluded": 1471,
+  "heldout_units_for_excluded_new_SKUs": 1515,
+  "zero_target_fraction": 0.5661175422974176,
+  "missing_amount_rows_in_accepted_window": 206,
+  "features": [
+    "lag_1",
+    "lag_2",
+    "lag_3",
+    "lag_4",
+    "mean_4",
+    "std_4",
+    "zero_weeks_4",
+    "change_1",
+    "category",
+    "size"
+  ],
+  "source_sha256": {
+    "Amazon Sale Report.csv": "ac9a366da5f3af418831fa53da9eebfc3b3838803e3774eec97dbcb291441beb",
+    "Sale Report.csv": "60320c9831d0194c52ce5791f03f9c4f12e3474490a931d7cd23282290a28e6d"
+  },
+  "assumptions_and_limits": [
+    "No transaction in a week means zero recorded shipped units; availability and lost demand are unknown.",
+    "Before first observation, zero denotes no recorded sales, not proof that a product was listed.",
+    "Fixed cohort contains SKUs seen in the initial four weeks, including cancelled-only items; new products are excluded.",
+    "Final order statuses are retrospective snapshot labels; event-time status history is unavailable.",
+    "Stock is undated and never used as a historical model predictor or a validated current balance.",
+    "Category and size are first observed pre-cutoff attributes; subsequent attribute changes are not modelled.",
+    "Only twelve complete weeks and two final test weeks are available; no annual seasonality or deployment claims.",
+    "Data appears to concern Amazon India; Sri Lankan retailer applicability has not been validated.",
+    "Original data publisher and reuse licence must be verified before external redistribution."
+  ]
+}

@@ -1,0 +1,13 @@
+Status,rows,units,included_in_target
+Cancelled,17247,5273,False
+Pending,52,51,False
+Shipped,73037,73235,True
+Shipped - Damaged,1,1,False
+Shipped - Delivered to Buyer,27952,28066,True
+Shipped - Lost in Transit,5,5,False
+Shipped - Out for Delivery,35,35,False
+Shipped - Picked Up,713,716,False
+Shipped - Rejected by Buyer,10,10,False
+Shipped - Returned to Seller,1898,1915,False
+Shipped - Returning to Seller,145,150,False
+Shipping,8,8,False

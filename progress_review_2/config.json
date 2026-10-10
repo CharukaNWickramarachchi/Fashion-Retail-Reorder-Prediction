@@ -1,0 +1,20 @@
+{
+  "seed": 42,
+  "first_week": "2022-04-04",
+  "last_complete_week": "2022-06-20",
+  "cohort_cutoff": "2022-05-02",
+  "validation_weeks": ["2022-05-30", "2022-06-06"],
+  "test_weeks": ["2022-06-13", "2022-06-20"],
+  "history_weeks": 4,
+  "accepted_statuses": ["Shipped", "Shipped - Delivered to Buyer"],
+  "selection_metric": "MAE",
+  "forecast_protocol": "One week ahead; observed prior-week sales available at each origin; fitted test models frozen before both test weeks.",
+  "candidate_settings": {
+    "NaiveLastWeek": {},
+    "Mean4Weeks": {},
+    "Ridge": {"alpha": 10.0},
+    "RandomForestHistory": {"n_estimators": 160, "max_depth": 12, "min_samples_leaf": 8},
+    "RandomForestAttributes": {"n_estimators": 160, "max_depth": 12, "min_samples_leaf": 8},
+    "HistGradientBoosting": {"max_iter": 150, "max_leaf_nodes": 15, "learning_rate": 0.05, "l2_regularization": 10.0, "early_stopping": false}
+  }
+}
